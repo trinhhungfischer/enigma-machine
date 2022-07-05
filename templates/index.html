@@ -1,0 +1,75 @@
+<html>
+
+<head>
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+
+  <style>
+    text {
+      font-size: 20px;
+
+    }
+
+    select {
+      font-size: 20px;
+
+    }
+    input {
+      font-size: 20px;
+    }
+
+    button {
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<script>
+  function alert_change_ai() {
+    let ai_select = document.getElementById("aimodule");
+    alert("AI module changed to " + ai_select.value);
+  }
+
+  function alert_change_depth() {
+    let depth_select = document.getElementById("depth");
+    alert("Depth changed to " + depth_select.value);
+  }
+</script>
+<body>
+  
+  <form action="/game" >
+    <label for="game" style="font-size:20">New game with color is:</label>
+    <select name="color" id="color">
+      <option value="1">White</option>
+      <option value="0">Black</option>
+      </select>
+    <input type="submit" value="Submit" id = "color_change">
+  </form>
+
+  <form action="/undo/" method="post"><button name="Undo" type="submit">Undo Last Move</button></form>
+  <form action="/move/"><input type="submit" value="Make Human Move:"><input name="move" type="text"></input></form>
+  <form action="/dev/" method="post"><button name="Comp Move" type="submit">Make Ai Move</button></form>
+  <form action="/aimodule" >
+    <label for="aimodule" style="font-size:20">Choose AI module:</label>
+    <select name="aimodule" id="aimodule">
+      <option>Select an option</option>
+      <option value="Minimax">Minimax</option>
+      <option value="Alphabeta">Minimax with Alpha Beta Pruning</option>
+      <option value="Negamax">Negamax</option>
+      <option value="NegamaxAB">Negamax Alpha Beta Pruning</option>
+    </select>
+    <input type="submit" value="Submit" id = "ai_module_change", onclick="alert_change_ai()">
+  </form>
+
+  <form action="/depth" >
+    <label for="depth" style="font-size:20">Choose AI Searching Depth:</label>
+    <select name="depth" id="depth">
+      <option>Select an option</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <input type="submit" value="Submit" id = "depth_change", onclick="alert_change_depth()">
+  </form>
+</body>
+</html>
