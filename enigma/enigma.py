@@ -73,9 +73,12 @@ class Enigma:
       results = [0] * 26
       
       for letter_pair in letter_pairs:
-        maping[letter_pair[0]] = letter_pair[1]
-        maping[letter_pair[1]] = letter_pair[0]
-      
+        try:
+          maping[letter_pair[0]] = letter_pair[1]
+          maping[letter_pair[1]] = letter_pair[0]
+        except:
+          continue    
+
       for (i, letter) in enumerate(alphabet_list):
         if letter in maping:
           results[i] = alphabet_list.index(maping[letter])
@@ -96,8 +99,11 @@ class Enigma:
       results = [0] * 26
       
       for letter_pair in letter_pairs:
-        maping[letter_pair[0]] = letter_pair[1]
-        maping[letter_pair[1]] = letter_pair[0]
+        try:
+          maping[letter_pair[0]] = letter_pair[1]
+          maping[letter_pair[1]] = letter_pair[0]
+        except:
+          continue    
       
       for (i, letter) in enumerate(alphabet_list):
         if letter in maping:
@@ -185,8 +191,6 @@ if __name__ == '__main__':
 
     e = Enigma()
     
-    print(e.encrypt("ZOFO"))
-
     if '-rj' in sys.argv:
         e.generate_all_rejewski()
     elif '-zg' in sys.argv:

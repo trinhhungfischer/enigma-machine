@@ -21,55 +21,168 @@
       font-size: 20px;
     }
   </style>
-</head>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-  function alert_change_ai() {
-    let ai_select = document.getElementById("aimodule");
-    alert("AI module changed to " + ai_select.value);
+  $(function() {
+    var $select = $(".rotor_pos");
+    for (i = 0; i < 26; i++) {
+      $select.append($('<option></option>').val(i).html(i + 1));
+
+    }
+  });
+
+  function alert_change_rotor_tuple() {
+    var $select = $(".rotor");
+    var rotor1 = $('#rotor1').val();
+    var rotor2 = $('#rotor2').val();
+    var rotor3 = $('#rotor3').val();
+
+    console.log(rotor1, rotor2, rotor3);
+
+    $.ajax({
+      url: "/rotor_order",
+      type: "POST",
+      data: { 1: rotor1, 2: rotor2, 3: rotor3 },
+    }).done(function (response) {
+      alert("Changing rotor positions will reset the cipher.");
+              
+    });
+
   }
 
-  function alert_change_depth() {
-    let depth_select = document.getElementById("depth");
-    alert("Depth changed to " + depth_select.value);
+  function alert_change_rotor_postion() {
+    var $select = $(".rotor");
+    var rotor1 = $('#rotor1_pos').val();
+    var rotor2 = $('#rotor2_pos').val();
+    var rotor3 = $('#rotor3_pos').val();
+
+
+    $.ajax({
+      url: "/rotor_setting",
+      type: "POST",
+      data: { "1": rotor1, "2": rotor2, "3": rotor3 },
+    }).done(function (response) {
+      alert("Changing the rotors position will reset the cipher.");              
+    });
+
+  }
+
+  function alert_change_reflector() {
+    var reflector = $('#reflector_text').val();
+    
+    $.ajax({
+      url: "/reflector",
+      type: "POST",
+      data: { "value": reflector},
+    }).done(function (response) {
+      alert("Changing the reflector will reset the cipher.");
+    });
+
+  }
+
+  function alert_change_plugboard() {
+    var plugboard = $('#plugboard_text').val();
+    
+    $.ajax({
+      url: "/plugboard",
+      type: "POST",
+      data: { "value": plugboard},
+    }).done(function (response) {
+      alert("Changing the plugboard will reset the cipher.");
+    });
+  }
+
+  function enter_letter() {
+    var letter = $('#letter_text').val();
+    if (letter === undefined || letter === "") {
+      alert("Please enter a letter.");
+      return
+    } 
+    $.ajax({
+      url: "/letter",
+      type: "POST",
+      data: { "value": letter},
+    }).done(function (response) {
+      response = response.result;
+      $.each(response, function (key, val) {
+        if (key == "value") {
+          alert("Letter out is", val); 
+        }
+      });
+
+    });
   }
 </script>
+
+</head>
+
+
 <body>
+  <div id = "setting">
+    <label for="rotor1" style="font-size:20">Rotor 1:</label>
+    <select name="1" class="rotor" id="rotor1">
+      <option></option>
+      <option value=1>I</option>
+      <option value=2>II</option>
+      <option value=3>III</option>
+      <option value=4>IV</option>
+      <option value=5>V</option>
+    
+    </select>
+    <label for="rotor2" style="font-size:20">Rotor 2:</label>
+    <select name="2" class="rotor" id="rotor2">
+      <option></option>
+      <option value=1>I</option>
+      <option value=2>II</option>
+      <option value=3>III</option>
+      <option value=4>IV</option>
+      <option value=5>V</option>
+    </select>
+    <label for="rotor3" style="font-size:20">Rotor 3:</label>
+    <select name="3" class="rotor" id="rotor3">
+      <option></option>
+      <option value=1>I</option>
+      <option value=2>II</option>
+      <option value=3>III</option>
+      <option value=4>IV</option>
+      <option value=5>V</option>
+    </select>
+    <input type="submit" value="Submit rotor order" id = "rotor_tupple_change", onclick="alert_change_rotor_tuple()">
+    <br>
+    <br>
+
+    <label for="rotor_set" style="font-size:20">Rotor 1:</label>
+    <select name="1" class="rotor_pos" id = "rotor1_pos">
+      <option></option>    
+    </select>
+    <label for="rotor2" style="font-size:20">Rotor 2:</label>
+    <select name="2" class="rotor_pos" id = "rotor2_pos">
+      <option></option>
+    </select>
+    <label for="rotor3" style="font-size:20">Rotor 3:</label>
+    <select name="3" class="rotor_pos" id = "rotor3_pos">
+      <option></option>
+    </select>
+    <input type="submit" value="Submit rotor setting" id = "rotor_position_change", onclick="alert_change_rotor_postion()">
   
-  <form action="/game" >
-    <label for="game" style="font-size:20">New game with color is:</label>
-    <select name="color" id="color">
-      <option value="1">White</option>
-      <option value="0">Black</option>
-      </select>
-    <input type="submit" value="Submit" id = "color_change">
-  </form>
+    <br>
+    <br>
 
-  <form action="/undo/" method="post"><button name="Undo" type="submit">Undo Last Move</button></form>
-  <form action="/move/"><input type="submit" value="Make Human Move:"><input name="move" type="text"></input></form>
-  <form action="/dev/" method="post"><button name="Comp Move" type="submit">Make Ai Move</button></form>
-  <form action="/aimodule" >
-    <label for="aimodule" style="font-size:20">Choose AI module:</label>
-    <select name="aimodule" id="aimodule">
-      <option>Select an option</option>
-      <option value="Minimax">Minimax</option>
-      <option value="Alphabeta">Minimax with Alpha Beta Pruning</option>
-      <option value="Negamax">Negamax</option>
-      <option value="NegamaxAB">Negamax Alpha Beta Pruning</option>
-    </select>
-    <input type="submit" value="Submit" id = "ai_module_change", onclick="alert_change_ai()">
-  </form>
+    <input type="submit" value="Plugboard setting" onclick="alert_change_plugboard()"><input name="value" type="text" id = "plugboard_text"></input>
 
-  <form action="/depth" >
-    <label for="depth" style="font-size:20">Choose AI Searching Depth:</label>
-    <select name="depth" id="depth">
-      <option>Select an option</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-    <input type="submit" value="Submit" id = "depth_change", onclick="alert_change_depth()">
-  </form>
+    <br>
+    <br>
+
+    <input type="submit" value="Reflector setting" onclick="alert_change_reflector()"><input name="value" type="text" id = "reflector_text"></input>
+
+    <br>
+    <br>
+
+    <input type="submit" value="Enter your letter" onclick="enter_letter()"><input name="value" type="text" id = "letter_text"></input>  
+  </div>
+  
+
 </body>
 </html>
