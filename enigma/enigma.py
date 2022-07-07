@@ -56,6 +56,7 @@ class Enigma:
 
     def set_rotor_setting(self, rotor_settings):
         self.rotor_settings = rotor_settings
+        print(rotor_settings)
         self.reset()
 
     def reset(self):

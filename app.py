@@ -74,9 +74,9 @@ def reflector():
 
 def letter():
   letter = request.form['value']
-  print(letter)
   letter = enigma.encode(letter)
-  results = {"value" : letter}
+  rotor1, rotor2, rotor3 = enigma.get_rotor_positions()
+  results = {"value" : letter, "rotor": {"1": rotor1 + 1, "2": rotor2 + 1, "3": rotor3 + 1}}
   return jsonify(result = results)
 
 if __name__ == '__main__':

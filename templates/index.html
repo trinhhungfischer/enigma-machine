@@ -27,8 +27,8 @@
 <script>
   $(function() {
     var $select = $(".rotor_pos");
-    for (i = 0; i < 26; i++) {
-      $select.append($('<option></option>').val(i).html(i + 1));
+    for (i = 1; i <= 26; i++) {
+      $select.append($('<option></option>').val(i).html(i));
 
     }
   });
@@ -108,11 +108,30 @@
       response = response.result;
       $.each(response, function (key, val) {
         if (key == "value") {
-          alert("Letter out is", val); 
+          letter = response.value  
+          alert("Letter out is: "+ letter); 
         }
-      });
+        
+          
+        rotor = response.rotor;
+        $.each(rotor, function (key, val) {
+          if (key == "1") {
+            $('#rotor1_pos').val(val);
+            $('#rotor1_pos').change();
+          }
+          if (key == "2") {
+            $('#rotor2_pos').val(val);
+            $('#rotor1_pos').change();
 
-    });
+          }
+          if (key == "3") {
+            $('#rotor3_pos').val(val);
+            $('#rotor1_pos').change();
+            }
+          });
+        });
+      });
+    
   }
 </script>
 
