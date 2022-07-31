@@ -27,3 +27,12 @@ or in Window
 pip install -r requirements.txt
 ```
 # Usage
+The simulation app is written by Flask and could played in localhost. You can use it by run [app.py](./app.py) python file by terminal by command in window
+```
+python app.py
+```
+or in linux 
+```
+python3 app.py
+```
+After that, you can open browser with [127.0.0.1:5000](127.0.0.1:5000) to start simulation app. You can setup rotor, rotor settings or plugboard setting for Enigma M3 simulation machine
